@@ -186,6 +186,7 @@ router.post('/quiz/:quizCode/questions/new', async (req, res) => {
       questionString: "Not yet defined",
       questionId: newQuestionId.toString()
     });
+    quiz.questionCount = quiz.questionCount + 1;
     quiz.save();
     logger.debug(`Added a new question to quiz with quiz code: ${quiz.quizCode}`);
     res.status(201).send({
