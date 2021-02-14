@@ -74,6 +74,18 @@ router.post('/quiz/create', async (req, res) => {
         });
       }
     }
+    if (quiz.quizCode == "about" || quiz.quizCode == "404" || quiz.quizCode == "help" || quiz.quizCode == "faq") {
+      return res.status(400).send({
+        success: false,
+        code: "invalid_data",
+        message: "Invalid data",
+        errors: [{
+          code: "duplicate_code",
+          message: "That code is a banned quiz code",
+          field: "quizCode"
+        }]
+      });
+    }
     const quizId = await randomUtil.getNewQuizId();
     quiz.quizId = quizId;
     console.log("passed checks");
