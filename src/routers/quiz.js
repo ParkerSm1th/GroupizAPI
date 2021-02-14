@@ -269,9 +269,9 @@ router.post('/quiz/:quizCode/questions/:questionId/rename', async (req, res) => 
     const quiz = await Quiz.findByCode(req.params.quizCode)
     var question = await Quiz.findQuestionById(req.params.quizCode, req.params.questionId);
 
-    const addAnswer = await Quiz.rename(quiz.quizCode, question.questionId, name);
+    const rename = await Quiz.rename(quiz.quizCode, question.questionId, req.body.name);
 
-    if (!addAnswer) {
+    if (!rename) {
       res.status(400).send({
         success: false,
         code: 1000,
