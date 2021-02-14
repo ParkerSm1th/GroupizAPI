@@ -172,6 +172,39 @@ router.post('/quiz/:quizCode/users/create', async (req, res) => {
   }
 })
 
+router.post('/quiz/:quizCode/questions/new', async (req, res) => {
+  // Add a new question
+  try {
+
+    const validQuiz = await quizUtil.validQuiz(req);
+    if (validQuiz !== null) return res.status(400).send(validQuiz);
+
+    const quiz = await Quiz.findByCode(req.params.quizCode)
+
+    let newQuestionId = await randomUtil.getNewQuestionId(quiz.quizId);
+    quiz.questions.push({
+      questionString: "Not yet defined",
+      questionId: newQuestionId.toString()
+    });
+    quiz.save();
+    logger.debug(`Added a new question to quiz with quiz code: ${quiz.quizCode}`);
+    res.status(201).send({
+      success: true,
+      quizId: quiz.quizId,
+      quizCode: quiz.quizCode,
+      questions: quiz.questions
+    });
+  } catch (error) {
+    console.log(error);
+    logger.error(new Error(error))
+    res.status(400).send({
+      success: false,
+      code: 1000,
+      message: "Unknown error"
+    });
+  }
+})
+
 router.post('/quiz/:quizCode/questions/:questionId/addAnswer', async (req, res) => {
   // Pulls specific question and answers
   try {
