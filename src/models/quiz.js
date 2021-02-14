@@ -173,6 +173,29 @@ quizSchema.statics.addAnswer = async (quizCode, questionId, answer) => {
   return true;
 }
 
+quizSchema.statics.rename = async (quizCode, questionId, name) => {
+  // Edits a channels name.
+  const quiz = await Quiz.findOne({
+    "quizCode": quizCode
+  });
+
+  if (quiz == null) return null;
+
+  var questionIndex = null;
+  for (var i = 0; i < quiz.questions.length; i++) {
+    if (quiz.questions[i].questionId === questionId) {
+      questionIndex = i;
+      break;
+    }
+  }
+  if (questionIndex == null) return null;
+
+  quiz.questions[questionIndex].questionString = name;
+
+  quiz.save();
+  return true;
+}
+
 const Quiz = mongoose.model('Quiz', quizSchema);
 
 module.exports = Quiz;

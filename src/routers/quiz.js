@@ -240,6 +240,63 @@ router.post('/quiz/:quizCode/questions/:questionId/addAnswer', async (req, res) 
   }
 })
 
+router.post('/quiz/:quizCode/questions/:questionId/rename', async (req, res) => {
+  // Pulls specific question and answers
+  try {
+    if (req.body.name == null || req.body.name == "") {
+      var errors = [];
+      if (req.body.name == null || req.body.name == "") {
+        errors.push({
+          code: "missing_name",
+          message: "Missing data",
+          field: "nname"
+        });
+      }
+      return res.status(400).send({
+        success: false,
+        code: "invalid_format",
+        message: "Invalid format",
+        errors: [errors]
+      });
+    }
+
+    const validQuiz = await quizUtil.validQuiz(req);
+    if (validQuiz !== null) return res.status(400).send(validQuiz);
+
+    const validQuestion = await quizUtil.validQuestion(req);
+    if (validQuestion !== null) return res.status(400).send(validQuestion);
+
+    const quiz = await Quiz.findByCode(req.params.quizCode)
+    var question = await Quiz.findQuestionById(req.params.quizCode, req.params.questionId);
+
+    const addAnswer = await Quiz.rename(quiz.quizCode, question.questionId, name);
+
+    if (!addAnswer) {
+      res.status(400).send({
+        success: false,
+        code: 1000,
+        message: "Unknown error"
+      });
+    }
+    logger.debug(`Renamed question with quizcode: ${quiz.quizCode}`);
+    question = await Quiz.findQuestionById(req.params.quizCode, req.params.questionId);
+    res.status(201).send({
+      success: true,
+      quizId: quiz.quizId,
+      quizCode: quiz.quizCode,
+      question
+    });
+  } catch (error) {
+    console.log(error);
+    logger.error(new Error(error))
+    res.status(400).send({
+      success: false,
+      code: 1000,
+      message: "Unknown error"
+    });
+  }
+})
+
 
 /* Quiz Data Pulling */
 
