@@ -94,7 +94,7 @@ router.post('/quiz/create', async (req, res) => {
     for (i = 0; i < quiz.questionCount; i++) {
       let newQuestionId = await randomUtil.getNewQuestionId(quiz.quizId);
       quiz.questions.push({
-        questionString: "Not yet defined",
+        questionString: "Click to enter the question",
         questionId: newQuestionId.toString()
       });
     }
@@ -183,7 +183,7 @@ router.post('/quiz/:quizCode/questions/new', async (req, res) => {
 
     let newQuestionId = await randomUtil.getNewQuestionId(quiz.quizId);
     quiz.questions.push({
-      questionString: "Not yet defined",
+      questionString: "Click to enter the question",
       questionId: newQuestionId.toString()
     });
     quiz.questionCount = quiz.questionCount + 1;
