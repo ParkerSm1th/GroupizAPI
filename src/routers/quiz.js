@@ -359,8 +359,6 @@ router.get('/quizzes', async (req, res) => {
       const quizzes = await Quiz.findLast(count);
     }
     
-
-    console.log(quizzes);
     const newQuizzes = [];
     quizzes.forEach(function(quiz) {
       newQuiz = {
