@@ -338,8 +338,9 @@ router.get('/quizzes', async (req, res) => {
   // Pulls all users
   try {
     var count = req.query.count;
+    var quizzes;
     if (count == null) {
-      const quizzes = await Quiz.findLast(5);
+      quizzes = await Quiz.findLast(5);
     } else {
       if (count > 15) {
         var errors = [];
@@ -356,7 +357,7 @@ router.get('/quizzes', async (req, res) => {
         });
         return true;
       }
-      const quizzes = await Quiz.findLast(count);
+      quizzes = await Quiz.findLast(count);
     }
     
     const newQuizzes = [];
