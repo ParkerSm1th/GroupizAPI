@@ -341,9 +341,18 @@ router.get('/quizzes', async (req, res) => {
     const quizzes = await Quiz.findLast(5);
 
     console.log(quizzes);
+    const newQuizzes = [];
+    quizzes.forEach(function(quiz) {
+      newQuiz = {
+        name: quiz.quizName,
+        quizCode: quiz.quizCode
+      };
+      newQuizzes.push(newQuiz);
+    })
 
     res.status(201).send({
-      success: true
+      success: true,
+      quizzes: nnewQuizzes
     });
   } catch (error) {
     console.log(error);
