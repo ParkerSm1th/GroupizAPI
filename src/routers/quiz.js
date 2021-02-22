@@ -341,7 +341,8 @@ router.get('/quizzes', async (req, res) => {
     var quizzes;
     if (count == null) {
       quizzes = await Quiz.findLast(5);
-    } else {
+    } else { 
+      count = Number.parseInt(count);
       if (count > 15) {
         var errors = [];
         errors.push({
