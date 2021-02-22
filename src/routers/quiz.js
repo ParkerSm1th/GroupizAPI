@@ -352,7 +352,7 @@ router.get('/quizzes', async (req, res) => {
 
     res.status(201).send({
       success: true,
-      quizzes: nnewQuizzes
+      quizzes: newQuizzes
     });
   } catch (error) {
     console.log(error);
