@@ -283,7 +283,7 @@ router.post('/quiz/:quizCode/questions/:questionId/rename', async (req, res) => 
         errors.push({
           code: "missing_name",
           message: "Missing data",
-          field: "nname"
+          field: "name"
         });
       }
       return res.status(400).send({
@@ -337,8 +337,28 @@ router.post('/quiz/:quizCode/questions/:questionId/rename', async (req, res) => 
 router.get('/quizzes', async (req, res) => {
   // Pulls all users
   try {
-
-    const quizzes = await Quiz.findLast(5);
+    var count = req.query.count;
+    if (count == null) {
+      const quizzes = await Quiz.findLast(5);
+    } else {
+      if (count > 15) {
+        var errors = [];
+        errors.push({
+          code: "invalid_count",
+          message: "You cannot request more than 15 quizzes",
+          field: "count"
+        });
+        return res.status(400).send({
+          success: false,
+          code: "invalid_format",
+          message: "Invalid format",
+          errors: [errors]
+        });
+        return true;
+      }
+      const quizzes = await Quiz.findLast(count);
+    }
+    
 
     console.log(quizzes);
     const newQuizzes = [];
