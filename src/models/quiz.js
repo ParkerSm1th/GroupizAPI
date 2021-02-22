@@ -196,6 +196,18 @@ quizSchema.statics.rename = async (quizCode, questionId, name) => {
   return true;
 }
 
+quizSchema.statics.findLast = async (quizCount) => {
+  // Check if a user is in a quiz
+  const quizzes = await Quiz.find().sort({ _id: -1 }).limit(quizCount);
+
+
+  if (!quizzes) {
+    return null;
+  } 
+
+  return quizzes;
+}
+
 const Quiz = mongoose.model('Quiz', quizSchema);
 
 module.exports = Quiz;
