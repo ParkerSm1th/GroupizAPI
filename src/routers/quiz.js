@@ -365,7 +365,8 @@ router.get('/quizzes', async (req, res) => {
     quizzes.forEach(function(quiz) {
       newQuiz = {
         name: quiz.quizName,
-        quizCode: quiz.quizCode
+        quizCode: quiz.quizCode,
+        questionCount: quiz.questionCount
       };
       newQuizzes.push(newQuiz);
     })
